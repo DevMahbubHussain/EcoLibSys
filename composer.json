@@ -1,0 +1,19 @@
+{
+    "name": "mahbub/eco-lib-sys",
+    "description": "Wordpress eco-friendly library management system Plugin",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "EcoLibSys\\": "inc/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mahbub",
+            "email": "mahbubhussaincse@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
