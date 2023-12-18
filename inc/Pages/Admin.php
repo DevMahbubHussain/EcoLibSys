@@ -6,7 +6,9 @@
 
 namespace EcoLibSys\Pages;
 
-class Admin
+use \EcoLibSys\Base\BaseController;
+
+class Admin extends BaseController
 {
     public function register()
     {
@@ -20,6 +22,6 @@ class Admin
 
     public function admin_index()
     {
-        require_once ECO_LIB_PLUGIN_PATH . 'templates/admin.php';
+        require_once $this->plugin_path . 'templates/admin.php';
     }
 }
