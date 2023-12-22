@@ -7,21 +7,73 @@
 namespace EcoLibSys\Pages;
 
 use \EcoLibSys\Base\BaseController;
+use \EcoLibSys\Api\SettingsApi;
+use \EcoLibSys\Api\Callbacks\AdminCallback;
 
 class Admin extends BaseController
 {
+    public $settings;
+    public $pages = array();
+    public $subpages = array();
+    public $callbacks;
+
+
     public function register()
     {
-        add_action('admin_menu', array($this, 'add_admin_pages'));
+        $this->settings = new SettingsApi();
+        $this->callbacks = new AdminCallback();
+        $this->setPages();
+        $this->setSubpages();
+        $this->settings->addPages($this->pages)->withSubPage('Dashboard')->addSubPages($this->subpages)->register();
     }
 
-    public function add_admin_pages()
+    /**
+     * Admin Paged function
+     *
+     * @return void
+     */
+    public function setPages()
     {
-        add_menu_page('EcoLibSys', 'Ecolibsys', 'manage_options', 'ecolibsys_plugin', array($this, 'admin_index'), 'dashicons-store', 110);
+        $this->pages = array(
+            array(
+                'page_title' => 'EcoLibSys Plugin',
+                'menu_title' => 'Ecolibsys',
+                'capability' => 'manage_options',
+                'menu_slug' => 'ecolibsys_plugin',
+                'callback' => array($this->callbacks, 'adminDashboard'),
+                'icon_url' => 'dashicons-store',
+                'position' => 110
+            )
+        );
     }
 
-    public function admin_index()
+    public function setSubpages()
     {
-        require_once $this->plugin_path . 'templates/admin.php';
+        $this->subpages = array(
+            array(
+                'parent_slug' => 'ecolibsys_plugin',
+                'page_title' => 'Custom Post Types',
+                'menu_title' => 'CPT',
+                'capability' => 'manage_options',
+                'menu_slug' => 'ecolibsys_cpt',
+                'callback' => array($this->callbacks, 'adminCpt'),
+            ),
+            array(
+                'parent_slug' => 'ecolibsys_plugin',
+                'page_title' => 'Custom Taxonomies',
+                'menu_title' => 'Taxonomies',
+                'capability' => 'manage_options',
+                'menu_slug' => 'ecolibsys_taxonomies',
+                'callback' => array($this->callbacks, 'adminTaxonomy'),
+            ),
+            array(
+                'parent_slug' => 'ecolibsys_plugin',
+                'page_title' => 'Custom Widgets',
+                'menu_title' => 'Widgets',
+                'capability' => 'manage_options',
+                'menu_slug' => 'ecolibsys_widgets',
+                'callback' => array($this->callbacks, 'adminWidget'),
+            )
+        );
     }
 }
