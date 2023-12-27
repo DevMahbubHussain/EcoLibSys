@@ -13,7 +13,7 @@
 
 			<form method="post" action="options.php">
 				<?php 
-                    settings_fields( 'ecolib_plugin_options' );
+                    settings_fields( 'ecolib_plugin_settings' );
                     do_settings_sections( 'ecolibsys_plugin' );
                     submit_button();
 				?>
